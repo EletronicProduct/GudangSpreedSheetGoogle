@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Gudang Sederhana</title>
-    <link rel="stylesheet" href="style.css"
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -54,10 +54,10 @@
         </div>
 
         <hr>
-
+        
         <div class="table-section">
             <h2>Data Stok Barang</h2>
-            <div id="loading">Memuat data...</div>
+            <div id="loading-stok">Memuat data...</div>
             <table id="stokTable">
                 <thead>
                     <tr>
@@ -66,10 +66,65 @@
                         <th>Stok Akhir</th>
                     </tr>
                 </thead>
-                <tbody>
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
+        
+        <hr>
+
+        <div class="table-section">
+            <h2>Laporan Barang Masuk</h2>
+            <div id="loading-masuk">Memuat data...</div>
+            <table id="masukTable">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Kode Barang</th>
+                        <th>Jumlah</th>
+                        <th>Supplier/Pembeli</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        
+        <hr>
+
+        <div class="table-section">
+            <h2>Laporan Barang Keluar</h2>
+            <div id="loading-keluar">Memuat data...</div>
+            <table id="keluarTable">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Kode Barang</th>
+                        <th>Jumlah</th>
+                        <th>Supplier/Pembeli</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <div class="table-section">
+            <h2>Laporan Stock Opname</h2>
+            <div id="loading-opname">Memuat data...</div>
+            <table id="opnameTable">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Kode Barang</th>
+                        <th>Stok Sistem</th>
+                        <th>Stok Fisik</th>
+                        <th>Selisih</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
     </div>
 
     <script src="main.js">
