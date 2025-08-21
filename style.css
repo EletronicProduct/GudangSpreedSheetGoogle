@@ -1,16 +1,119 @@
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .container { max-width: 800px; margin: auto; }
-        h1, h2 { text-align: center; }
-        .form-section, .table-section { margin-bottom: 40px; }
-        form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
-        input, select, button { padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
-        button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
-        button:hover { background-color: #45a049; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
-        th { background-color: #f2f2f2; }
-        #loading { text-align: center; color: #555; margin-top: 20px; }
-        #message { text-align: center; margin-top: 10px; font-weight: bold; }
-        #opnameResult { margin-top: 20px; }
-        .success { color: green; }
-        .error { color: red; }
+body { font-family: Arial, sans-serif; margin: 20px; }
+.container {
+        max-width: 1000px;
+        margin: auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1,
+    h2 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .form-section,
+    .table-section {
+        margin-bottom: 40px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    form {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 15px 20px;
+        max-width: 600px;
+        margin: auto;
+        padding: 25px;
+        border: 1px solid #e0e6ed;
+        border-radius: 8px;
+        background-color: #f9fbfd;
+    }
+    form label {
+        font-weight: bold;
+        color: #5e6e82;
+    }
+
+    form input,
+    form select,
+    form button {
+        padding: 12px;
+        border: 1px solid #d2d6da;
+        border-radius: 6px;
+        font-size: 16px;
+    }
+
+    form button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    form button:hover {
+        background-color: #0056b3;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    th,
+    td {
+        padding: 15px;
+        border-bottom: 1px solid #e0e6ed;
+        text-align: left;
+    }
+
+    th {
+        background-color: #343a40;
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    #loading {
+        text-align: center;
+        color: #777;
+        margin-top: 20px;
+        font-style: italic;
+    }
+
+    #message {
+        text-align: center;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    #opnameResult {
+        margin-top: 25px;
+        padding: 15px;
+        border: 1px solid #d2d6da;
+        border-radius: 6px;
+        background-color: #f9fbfd;
+    }
+        .success {
+        color: #28a745;
+    }
+
+    .error {
+        color: #dc3545;
+    }
+
+    hr {
+        border: 1px solid #e0e6ed;
+        margin: 30px 0;
+    }
