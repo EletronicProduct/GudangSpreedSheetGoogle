@@ -1,39 +1,66 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydyeO6V2XSdD1WmR4x63wyVI8b1wb-WxIeosz5hJ0iY6_UfGSZkWsvw5ZQQ-MPj8at-w/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQCuU8m7m8Nr9Jzjva3QaI4r6DgsUWH7Yf5v7zAwCQKbloiYcFIlzn0XSUKJyEywt52A/exec';
 
 const inputForm = document.getElementById('inputForm');
 const opnameForm = document.getElementById('opnameForm');
 const messageDiv = document.getElementById('message');
 const opnameResultDiv = document.getElementById('opnameResult');
-const tableBody = document.querySelector('#stokTable tbody');
-const loadingDiv = document.getElementById('loading');
 
-// Fungsi untuk mengambil dan menampilkan data gudang
-async function fetchStokData() {
+const tableConfigs = [
+  { id: 'stokTable', sheetName: 'DATA_GUDANG', loadingId: 'loading-stok' },
+  { id: 'masukTable', sheetName: 'BARANG_MASUK', loadingId: 'loading-masuk' },
+  { id: 'keluarTable', sheetName: 'BARANG_KELUAR', loadingId: 'loading-keluar' },
+  { id: 'opnameTable', sheetName: 'STOCK_OPNAME_REPORT', loadingId: 'loading-opname' }
+];
+
+async function fetchAndRenderTable(config) {
+  const tableBody = document.querySelector(`#${config.id} tbody`);
+  const loadingDiv = document.getElementById(config.loadingId);
   loadingDiv.style.display = 'block';
   tableBody.innerHTML = '';
   try {
-    const response = await fetch(SCRIPT_URL);
+    const response = await fetch(`${SCRIPT_URL}?sheet=${config.sheetName}`);
     const data = await response.json();
     
-    if (data.length > 0) {
+    if (data.status === 'error') {
+      tableBody.innerHTML = `<tr><td colspan="4">${data.message}</td></tr>`;
+      console.error('Apps Script Error:', data.message);
+    } else if (data.length > 0) {
+      const headers = Object.keys(data[0]);
+      const headerNames = headers.map(header => {
+        const capitalized = header.charAt(0).toUpperCase() + header.slice(1);
+        return capitalized.replace(/([A-Z])/g, ' $1').trim();
+      });
+      
+      document.querySelector(`#${config.id} thead tr`).innerHTML = headerNames.map(h => `<th>${h}</th>`).join('');
+      
       data.forEach(item => {
         const row = document.createElement('tr');
-        row.innerHTML = `
-                            <td>${item.kodebarang}</td>
-                            <td>${item.namabarang}</td>
-                            <td>${item.stokakhir}</td>
-                        `;
+        row.innerHTML = headers.map(header => {
+          let value = item[header] || '';
+          if (header.includes('tanggal')) {
+            try {
+              const date = new Date(value);
+              value = date.toLocaleDateString('id-ID');
+            } catch (e) {}
+          }
+          return `<td>${value}</td>`;
+        }).join('');
         tableBody.appendChild(row);
       });
     } else {
-      tableBody.innerHTML = '<tr><td colspan="3">Tidak ada data stok.</td></tr>';
+      tableBody.innerHTML = `<tr><td colspan="4">Tidak ada data di sheet ini.</td></tr>`;
     }
   } catch (error) {
-    console.error('Error fetching data:', error);
-    tableBody.innerHTML = '<tr><td colspan="3">Gagal memuat data. Periksa Apps Script.</td></tr>';
+    console.error(`Error fetching data for ${config.sheetName}:`, error);
+    tableBody.innerHTML = `<tr><td colspan="4">Gagal memuat data.</td></tr>`;
   } finally {
     loadingDiv.style.display = 'none';
   }
+}
+
+async function fetchAllTables() {
+  const promises = tableConfigs.map(config => fetchAndRenderTable(config));
+  await Promise.all(promises);
 }
 
 // Fungsi untuk mengirim data form barang masuk/keluar
@@ -61,7 +88,7 @@ inputForm.addEventListener('submit', async (e) => {
       messageDiv.className = 'success';
       messageDiv.textContent = result.message;
       inputForm.reset();
-      await fetchStokData();
+      await fetchAllTables();
     } else {
       messageDiv.className = 'error';
       messageDiv.textContent = result.message;
@@ -104,6 +131,7 @@ opnameForm.addEventListener('submit', async (e) => {
                         <p class="success">${message}</p>
                     `;
       opnameForm.reset();
+      await fetchAllTables();
     } else {
       opnameResultDiv.innerHTML = `<p class="error">${result.message}</p>`;
     }
@@ -113,5 +141,5 @@ opnameForm.addEventListener('submit', async (e) => {
   }
 });
 
-// Muat data saat halaman pertama kali dibuka
-document.addEventListener('DOMContentLoaded', fetchStokData);
+// Muat semua tabel saat halaman pertama kali dibuka
+document.addEventListener('DOMContentLoaded', fetchAllTables);
